@@ -1,0 +1,1026 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Metadata": {
+        "AWS::CloudFormation::Designer": {
+            "36f645e0-80a0-4dc4-8be6-1fb3c241d28d": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 630,
+                    "y": 320
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "9d5633df-35d5-4a17-9f2f-e808e20b57fc": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 200,
+                    "y": 320
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "40fd6c94-f642-446a-8fa0-08b705ad8b83": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 360,
+                    "y": 320
+                },
+                "z": 0,
+                "embeds": [],
+                "dependson": [
+                    "9d5633df-35d5-4a17-9f2f-e808e20b57fc"
+                ]
+            },
+            "4c32bbc5-7072-405f-9fd7-d3805b0426d5": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 500,
+                    "y": 320
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "ba4703c9-56e7-4689-8273-71fa4482ff40": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 640,
+                    "y": 410
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "54d7b55f-fcf8-45f3-9a30-da1a59e7eb28": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 500,
+                    "y": 410
+                },
+                "z": 0,
+                "embeds": [],
+                "dependson": [
+                    "40fd6c94-f642-446a-8fa0-08b705ad8b83"
+                ]
+            },
+            "04f17af9-7f0b-4914-a398-06b1dc99dc30": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 610,
+                    "y": 510
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "d7e5b553-c809-46df-b2e3-93c3178f1aec": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 220,
+                    "y": 620
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "b2baa296-0e9b-4347-b437-5890a5368037": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 430,
+                    "y": 620
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "b042b4fb-45c5-4557-9bbf-186f77780999": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 770,
+                    "y": 510
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "9923a674-a544-4dd6-b5b9-e95e3e8cfc0d": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 750,
+                    "y": 720
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "e76bed9d-33b9-4ec9-a4e8-a9e53eed0379": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 550,
+                    "y": 720
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "9336252d-4b72-4a63-8b5b-9feca271249d": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 960,
+                    "y": 720
+                },
+                "z": 0,
+                "embeds": [],
+                "dependson": [
+                    "9923a674-a544-4dd6-b5b9-e95e3e8cfc0d"
+                ]
+            }
+        }
+    },
+    "Resources": {
+        "IoTToTimestream": {
+            "Type": "AWS::IoT::TopicRule",
+            "Properties": {
+                "RuleName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "_IoTToTimestream"
+                        ]
+                    ]
+                },
+                "TopicRulePayload": {
+                    "RuleDisabled": "true",
+                    "AwsIotSqlVersion": "2015-10-08",
+                    "Sql": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "SELECT cast(v1 as double) as v1, cast(i1 as double) as i1, cast(kW as double) as kW from '",
+                                {
+                                    "Ref": "DataTopic"
+                                },
+                                "'"
+                            ]
+                        ]
+                    },
+                    "Actions": [
+                        {
+                            "Timestream": {
+                                "DatabaseName": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            {
+                                                "Ref": "AWS::StackName"
+                                            },
+                                            "_db"
+                                        ]
+                                    ]
+                                },
+                                "TableName": {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            {
+                                                "Ref": "AWS::StackName"
+                                            },
+                                            "_energy"
+                                        ]
+                                    ]
+                                },
+                                "Dimensions": [
+                                    {
+                                        "Name": "panelId",
+                                        "Value": "${panelId}"
+                                    },
+                                    {
+                                        "Name": "meterId",
+                                        "Value": "${meterId}"
+                                    }
+                                ],
+                                "RoleArn": {
+                                    "Fn::GetAtt": [
+                                        "TimestreamWriteRole",
+                                        "Arn"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "36f645e0-80a0-4dc4-8be6-1fb3c241d28d"
+                }
+            },
+            "DependsOn": [
+                "TimestreamWriteRole"
+            ]
+        },
+        "TimestreamDB": {
+            "Type": "AWS::Timestream::Database",
+            "Properties": {
+                "DatabaseName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "_db"
+                        ]
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "9d5633df-35d5-4a17-9f2f-e808e20b57fc"
+                }
+            }
+        },
+        "TimestreamTable": {
+            "Type": "AWS::Timestream::Table",
+            "Properties": {
+                "DatabaseName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "_db"
+                        ]
+                    ]
+                },
+                "MagneticStoreWriteProperties": {
+                    "EnableMagneticStoreWrites": true
+                },
+                "TableName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "_energy"
+                        ]
+                    ]
+                },
+                "RetentionProperties": {
+                    "MagneticStoreRetentionPeriodInDays": 3650,
+                    "MemoryStoreRetentionPeriodInHours": 1
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "40fd6c94-f642-446a-8fa0-08b705ad8b83"
+                }
+            },
+            "DependsOn": [
+                "TimestreamDB"
+            ]
+        },
+        "TimestreamWriteRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "_IoTToTimestreamWriteActionRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "iot.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "TimestreamWritePolicy",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": "timestream:WriteRecords",
+                                    "Resource": {
+                                        "Fn::GetAtt": [
+                                            "TimestreamTable",
+                                            "Arn"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": "timestream:DescribeEndpoints",
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "4c32bbc5-7072-405f-9fd7-d3805b0426d5"
+                }
+            },
+            "DependsOn": [
+                "TimestreamTable"
+            ]
+        },
+        "EnergyReadLambdaRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "_EnergyReadLambdaRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "EnergyReadLambdaPolicy",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "timestream:CancelQuery",
+                                        "timestream:DescribeDatabase",
+                                        "timestream:DescribeTable",
+                                        "timestream:ListDatabases",
+                                        "timestream:ListMeasures",
+                                        "timestream:ListTables",
+                                        "timestream:ListTagsForResource",
+                                        "timestream:Select",
+                                        "timestream:SelectValues",
+                                        "timestream:DescribeScheduledQuery",
+                                        "timestream:ListScheduledQueries"
+                                    ],
+                                    "Resource": [
+                                        {
+                                            "Fn::Join": [
+                                                "",
+                                                [
+                                                    {
+                                                        "Fn::GetAtt": [
+                                                            "TimestreamDB",
+                                                            "Arn"
+                                                        ]
+                                                    },
+                                                    "/*"
+                                                ]
+                                            ]
+                                        },
+                                        {
+                                            "Fn::Join": [
+                                                "",
+                                                [
+                                                    {
+                                                        "Fn::GetAtt": [
+                                                            "TimestreamDB",
+                                                            "Arn"
+                                                        ]
+                                                    },
+                                                    "/table/*"
+                                                ]
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": "timestream:DescribeEndpoints",
+                                    "Resource": "*"
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": "logs:CreateLogGroup",
+                                    "Resource": {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:logs:",
+                                                {
+                                                    "Ref": "AWS::Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AWS::AccountId"
+                                                },
+                                                ":*"
+                                            ]
+                                        ]
+                                    }
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents"
+                                    ],
+                                    "Resource": [
+                                        {
+                                            "Fn::Join": [
+                                                "",
+                                                [
+                                                    "arn:aws:logs:",
+                                                    {
+                                                        "Ref": "AWS::Region"
+                                                    },
+                                                    ":",
+                                                    {
+                                                        "Ref": "AWS::AccountId"
+                                                    },
+                                                    ":log-group:/aws/lambda/*:*"
+                                                ]
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "54d7b55f-fcf8-45f3-9a30-da1a59e7eb28"
+                }
+            },
+            "DependsOn": [
+                "TimestreamTable"
+            ]
+        },
+        "EnergyMonitorWorkspace": {
+            "Type": "AWS::IoTTwinMaker::Workspace",
+            "Properties": {
+                "S3Location": {
+                    "Fn::GetAtt": [
+                        "TwinMakerS3",
+                        "Arn"
+                    ]
+                },
+                "Role": {
+                    "Fn::GetAtt": [
+                        "EnergyMonitorWorkspaceRole",
+                        "Arn"
+                    ]
+                },
+                "WorkspaceId": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "_workspace"
+                        ]
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "04f17af9-7f0b-4914-a398-06b1dc99dc30"
+                }
+            },
+            "DependsOn": [
+                "TwinMakerS3"
+            ]
+        },
+        "TwinMakerS3": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "CorsConfiguration": {
+                    "CorsRules": [
+                        {
+                            "AllowedHeaders": [
+                                "*"
+                            ],
+                            "AllowedMethods": [
+                                "GET",
+                                "PUT",
+                                "POST",
+                                "DELETE",
+                                "HEAD"
+                            ],
+                            "AllowedOrigins": [
+                                "*"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "d7e5b553-c809-46df-b2e3-93c3178f1aec"
+                }
+            }
+        },
+        "EnergyMonitorWorkspaceRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "_EnergyMonitorWorkspaceRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "iottwinmaker.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "EnergyMonitorWorkspacePolicy",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "s3:GetBucket*",
+                                        "s3:GetObject",
+                                        "s3:ListBucket",
+                                        "s3:PutObject"
+                                    ],
+                                    "Resource": [
+                                        {
+                                            "Fn::GetAtt": [
+                                                "TwinMakerS3",
+                                                "Arn"
+                                            ]
+                                        },
+                                        {
+                                            "Fn::Join": [
+                                                "",
+                                                [
+                                                    {
+                                                        "Fn::GetAtt": [
+                                                            "TwinMakerS3",
+                                                            "Arn"
+                                                        ]
+                                                    },
+                                                    "/*"
+                                                ]
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "s3:DeleteObject"
+                                    ],
+                                    "Resource": [
+                                        {
+                                            "Fn::Join": [
+                                                "",
+                                                [
+                                                    {
+                                                        "Fn::GetAtt": [
+                                                            "TwinMakerS3",
+                                                            "Arn"
+                                                        ]
+                                                    },
+                                                    "/DO_NOT_DELETE_WORKSPACE_*"
+                                                ]
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "lambda:InvokeFunction"
+                                    ],
+                                    "Resource": {
+                                        "Fn::GetAtt": [
+                                            "EnergyReadLambda",
+                                            "Arn"
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "b2baa296-0e9b-4347-b437-5890a5368037"
+                }
+            }
+        },
+        "EnergyReadLambda": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "ZipFile": "import logging\nimport json\nimport os\nimport boto3\n\n\nfrom datetime import datetime\n\nLOGGER = logging.getLogger()\nLOGGER.setLevel(logging.INFO)\n\n# Get db and table name from Env variables\nDATABASE_NAME = os.environ['TIMESTREAM_DATABASE_NAME']\nTABLE_NAME = os.environ['TIMESTREAM_TABLE_NAME']\n\n# Python boto client for AWS Timestream\nQUERY_CLIENT = boto3.client('timestream-query')\n\n\n# Utility function: parses a timestream row into a python dict for more convenient field access\ndef parse_row(column_schema, timestream_row):\n    data = timestream_row['Data']\n    result = {}\n    for i in range(len(data)):\n        info = column_schema[i]\n        datum = data[i]\n        key, val = parse_datum(info, datum)\n        result[key] = val\n    return result\n\n# Utility function: parses timestream datum entries into (key,value) tuples. Only ScalarTypes currently supported.\ndef parse_datum(info, datum):\n    if datum.get('NullValue', False):\n        return info['Name'], None\n    column_type = info['Type']\n    if 'ScalarType' in column_type:\n        return info['Name'], datum['ScalarValue']\n    else:\n        raise Exception(f\"Unsupported columnType[{column_type}]\")\n\n# This function extracts the timestamp from a Timestream row and returns in ISO8601 basic format\ndef get_iso8601_timestamp(str):\n    #  e.g. '2022-04-06 00:17:45.419000000' -> '2022-04-06T00:17:45.419000000Z'\n    return str.replace(' ', 'T') + 'Z'\n\n# Main logic\ndef lambda_handler(event, context):\n    LOGGER.info(event)\n\n    entity_id = event[\"entityId\"]\n    panel_id = event[\"properties\"][\"panelId\"][\"value\"][\"stringValue\"]\n    meter_id = event[\"properties\"][\"meterId\"][\"value\"][\"stringValue\"]\n    component_name = event[\"componentName\"]\n    \n\n    # 1. EXECUTE THE QUERY TO RETURN VALUES FROM DATABASE\n    query_string = f\"SELECT measure_name, time, measure_value::double\" \\\n        f\" FROM {DATABASE_NAME}.{TABLE_NAME} \" \\\n        f\" WHERE time > from_iso8601_timestamp('{event['startTime']}')\" \\\n        f\" AND time <= from_iso8601_timestamp('{event['endTime']}')\" \\\n        f\" AND panelId = '{panel_id}'\" \\\n        f\" AND meterId = '{meter_id}'\" \\\n        f\" ORDER BY time ASC\"\n            \n    try:\n        query_page = QUERY_CLIENT.query(\n            QueryString = query_string\n        )\n    except Exception as err:\n        LOGGER.error(\"Exception while running query: %s\", err)\n        raise err\n\n\n\n    next_token = None\n    if query_page.get('NextToken') is not None:\n       next_token = query_page['NextToken']\n    schema = query_page['ColumnInfo']\n\n    # 2. PARSE TIMESTREAM ROWS\n    result_rows = []\n    for row in query_page['Rows']:\n        row_parsed = parse_row(schema,row)\n        #LOGGER.info('row parsed: %s', row_parsed)\n        result_rows.append(row_parsed)\n\n    # 3. CONVERT THE QUERY RESULTS TO THE FORMAT TWINMAKER EXPECTS\n\n    LOGGER.info(result_rows)\n    value_array = {}\n\n    for result_row in result_rows:\n        ts = result_row['time']\n        measure_name = result_row['measure_name']\n        measure_value = result_row['measure_value::double']\n\n        time = get_iso8601_timestamp(ts)\n        value = { 'doubleValue' : str(measure_value) }\n        \n        if measure_name in event[\"selectedProperties\"]:\n            if measure_name not in value_array:\n                value_array[measure_name] = [];\n            value_array[measure_name].append({\n                'time' : time,\n                'value' : value\n            })\n            \n    print(value_array)\n\n    # The final structure \"propertyValues\"\n    property_values = []\n    \n    for property_name in event[\"selectedProperties\"]:\n        \n        if property_name in value_array:\n            entity_property_reference = {}\n            entity_property_reference['componentName'] = component_name\n            entity_property_reference['propertyName'] = property_name\n            entity_property_reference['entityId'] = entity_id\n            property_values.append({\n                'entityPropertyReference': entity_property_reference,\n                'values': value_array[property_name]\n            })\n    \n    LOGGER.info(\"property_values: %s\", property_values)\n\n    # marshall propertyValues and nextToken into final response\n    return_obj = {\n       'propertyValues': property_values,\n       'nextToken': next_token\n       }\n\n    return return_obj          \n"
+                },
+                "Role": {
+                    "Fn::GetAtt": [
+                        "EnergyReadLambdaRole",
+                        "Arn"
+                    ]
+                },
+                "ReservedConcurrentExecutions": 3,
+                "Runtime": "python3.7",
+                "Handler": "index.lambda_handler",
+                "Environment": {
+                    "Variables": {
+                        "TIMESTREAM_DATABASE_NAME": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    {
+                                        "Ref": "AWS::StackName"
+                                    },
+                                    "_db"
+                                ]
+                            ]
+                        },
+                        "TIMESTREAM_TABLE_NAME": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    {
+                                        "Ref": "AWS::StackName"
+                                    },
+                                    "_energy"
+                                ]
+                            ]
+                        }
+                    }
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "ba4703c9-56e7-4689-8273-71fa4482ff40"
+                }
+            },
+            "DependsOn": [
+                "EnergyReadLambdaRole"
+            ]
+        },
+        "EnergyMeterComponent": {
+            "Type": "AWS::IoTTwinMaker::ComponentType",
+            "Properties": {
+                "ComponentTypeId": "com.example.energymeter",
+                "WorkspaceId": {
+                    "Ref": "EnergyMonitorWorkspace"
+                },
+                "Functions": {
+                    "dataReader": {
+                        "ImplementedBy": {
+                            "IsNative": false,
+                            "Lambda": {
+                                "Arn": {
+                                    "Fn::GetAtt": [
+                                        "EnergyReadLambda",
+                                        "Arn"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "PropertyDefinitions": {
+                    "v1": {
+                        "DataType": {
+                            "Type": "DOUBLE"
+                        },
+                        "IsRequiredInEntity": false,
+                        "IsExternalId": false,
+                        "IsStoredExternally": true,
+                        "IsTimeSeries": true
+                    },
+                    "i1": {
+                        "DataType": {
+                            "Type": "DOUBLE"
+                        },
+                        "IsRequiredInEntity": false,
+                        "IsExternalId": false,
+                        "IsStoredExternally": true,
+                        "IsTimeSeries": true
+                    },
+                    "kW": {
+                        "DataType": {
+                            "Type": "DOUBLE"
+                        },
+                        "IsRequiredInEntity": false,
+                        "IsExternalId": false,
+                        "IsStoredExternally": true,
+                        "IsTimeSeries": true
+                    },
+                    "panelId": {
+                        "DataType": {
+                            "Type": "STRING"
+                        },
+                        "IsRequiredInEntity": true,
+                        "IsExternalId": false,
+                        "IsStoredExternally": false,
+                        "IsTimeSeries": false
+                    },
+                    "meterId": {
+                        "DataType": {
+                            "Type": "STRING"
+                        },
+                        "IsRequiredInEntity": true,
+                        "IsExternalId": false,
+                        "IsStoredExternally": false,
+                        "IsTimeSeries": false
+                    }
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "b042b4fb-45c5-4557-9bbf-186f77780999"
+                }
+            }
+        },
+        "GrafanaServiceRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "_GrafanaServiceRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "grafana.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole",
+                            "Condition": {
+                                "StringEquals": {
+                                    "aws:SourceAccount": {
+                                        "Ref": "AWS::AccountId"
+                                    }
+                                },
+                                "StringLike": {
+                                    "aws:SourceArn": {
+                                        "Fn::Join": [
+                                            "",
+                                            [
+                                                "arn:aws:grafana:",
+                                                {
+                                                    "Ref": "AWS::Region"
+                                                },
+                                                ":",
+                                                {
+                                                    "Ref": "AWS::AccountId"
+                                                },
+                                                ":/workspaces/*"
+                                            ]
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                "Policies": []
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "e76bed9d-33b9-4ec9-a4e8-a9e53eed0379"
+                }
+            }
+        },
+        "GrafanaWorkspace": {
+            "Type": "AWS::Grafana::Workspace",
+            "Properties": {
+                "AccountAccessType": "CURRENT_ACCOUNT",
+                "Name": {
+                    "Ref": "AWS::StackName"
+                },
+                "AuthenticationProviders": [
+                    "AWS_SSO"
+                ],
+                "PermissionType": "SERVICE_MANAGED",
+                "RoleArn": {
+                    "Fn::GetAtt": [
+                        "GrafanaServiceRole",
+                        "Arn"
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "9923a674-a544-4dd6-b5b9-e95e3e8cfc0d"
+                }
+            }
+        },
+        "DashboardRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "_DashboardRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": {
+                                    "Fn::GetAtt": [
+                                        "GrafanaServiceRole",
+                                        "Arn"
+                                    ]
+                                }
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "DashboardPolicy",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "s3:GetObject"
+                                    ],
+                                    "Resource": [
+                                        {
+                                            "Fn::GetAtt": [
+                                                "TwinMakerS3",
+                                                "Arn"
+                                            ]
+                                        },
+                                        {
+                                            "Fn::Join": [
+                                                "",
+                                                [
+                                                    {
+                                                        "Fn::GetAtt": [
+                                                            "TwinMakerS3",
+                                                            "Arn"
+                                                        ]
+                                                    },
+                                                    "/*"
+                                                ]
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "iottwinmaker:Get*",
+                                        "iottwinmaker:List*"
+                                    ],
+                                    "Resource": [
+                                        {
+                                            "Fn::GetAtt": [
+                                                "EnergyMonitorWorkspace",
+                                                "Arn"
+                                            ]
+                                        },
+                                        {
+                                            "Fn::Join": [
+                                                "",
+                                                [
+                                                    {
+                                                        "Fn::GetAtt": [
+                                                            "EnergyMonitorWorkspace",
+                                                            "Arn"
+                                                        ]
+                                                    },
+                                                    "/*"
+                                                ]
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": "iottwinmaker:ListWorkspaces",
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "9336252d-4b72-4a63-8b5b-9feca271249d"
+                }
+            },
+            "DependsOn": [
+                "GrafanaWorkspace"
+            ]
+        }
+    },
+    "Parameters": {
+        "DataTopic": {
+            "Description": "Specify the topic that the uplink data is published to, in IoT Core",
+            "Type": "String"
+        }
+    }
+}

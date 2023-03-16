@@ -166,6 +166,18 @@
                 "dependson": [
                     "9923a674-a544-4dd6-b5b9-e95e3e8cfc0d"
                 ]
+            },
+            "9a71a412-8294-4faf-98c4-c459916f55c5": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 2.2859728702682043,
+                    "y": 531.2095626807543
+                },
+                "z": 0,
+                "embeds": []
             }
         }
     },
@@ -320,17 +332,6 @@
         "TimestreamWriteRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
-                "RoleName": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            {
-                                "Ref": "AWS::StackName"
-                            },
-                            "_IoTToTimestreamWriteActionRole"
-                        ]
-                    ]
-                },
                 "AssumeRolePolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -381,17 +382,6 @@
         "EnergyReadLambdaRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
-                "RoleName": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            {
-                                "Ref": "AWS::StackName"
-                            },
-                            "_EnergyReadLambdaRole"
-                        ]
-                    ]
-                },
                 "AssumeRolePolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -559,6 +549,15 @@
         "TwinMakerS3": {
             "Type": "AWS::S3::Bucket",
             "Properties": {
+                "BucketEncryption": {
+                    "ServerSideEncryptionConfiguration": [
+                        {
+                            "ServerSideEncryptionByDefault": {
+                                "SSEAlgorithm": "AES256"
+                            }
+                        }
+                    ]
+                },
                 "CorsConfiguration": {
                     "CorsRules": [
                         {
@@ -588,17 +587,6 @@
         "EnergyMonitorWorkspaceRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
-                "RoleName": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            {
-                                "Ref": "AWS::StackName"
-                            },
-                            "_EnergyMonitorWorkspaceRole"
-                        ]
-                    ]
-                },
                 "AssumeRolePolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -823,17 +811,6 @@
         "GrafanaServiceRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
-                "RoleName": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            {
-                                "Ref": "AWS::StackName"
-                            },
-                            "_GrafanaServiceRole"
-                        ]
-                    ]
-                },
                 "AssumeRolePolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -906,17 +883,6 @@
         "DashboardRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
-                "RoleName": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            {
-                                "Ref": "AWS::StackName"
-                            },
-                            "_DashboardRole"
-                        ]
-                    ]
-                },
                 "AssumeRolePolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -1015,6 +981,33 @@
             "DependsOn": [
                 "GrafanaWorkspace"
             ]
+        },
+        "TwinMakerS3Policy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+                "Bucket": {
+                    "Ref": "TwinMakerS3"
+                },
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Effect": "Deny",
+                            "Principal": "*",
+                            "Action": "*",
+                            "Condition": {
+                                "Bool": {
+                                    "aws:SecureTransport": false
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "9a71a412-8294-4faf-98c4-c459916f55c5"
+                }
+            }
         }
     },
     "Parameters": {

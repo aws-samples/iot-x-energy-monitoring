@@ -177,7 +177,10 @@
                     "y": 531.2095626807543
                 },
                 "z": 0,
-                "embeds": []
+                "embeds": [],
+                "isassociatedwith": [
+                    "d7e5b553-c809-46df-b2e3-93c3178f1aec"
+                ]
             }
         }
     },
@@ -998,6 +1001,12 @@
                                 "Bool": {
                                     "aws:SecureTransport": false
                                 }
+                            },
+                            "Resource": {
+                                "Fn::GetAtt": [
+                                    "TwinMakerS3",
+                                    "Arn"
+                                ]
                             }
                         }
                     ]

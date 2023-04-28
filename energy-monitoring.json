@@ -867,7 +867,7 @@
                     "Ref": "AWS::StackName"
                 },
                 "AuthenticationProviders": [
-                    "AWS_SSO"
+                    "SAML"
                 ],
                 "PermissionType": "SERVICE_MANAGED",
                 "RoleArn": {
